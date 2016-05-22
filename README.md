@@ -2,34 +2,35 @@
 
 ## Workshop information
 
-The workshop will take place from 13:30 to 16:30 on 2016-05-29, in the ... room of the [Fredericton Convention Centre](https://www.google.ca/maps/place/Fredericton+Convention+Centre/@45.9603624,-66.6397234,17z/data=!3m1!4b1!4m5!3m4!1s0x4ca418a14d3b0b3f:0xb0d7471229c5f317!8m2!3d45.9603624!4d-66.6375347?hl=en). 
+The workshop will take place from 13:30 to 16:30 on Sunday 2016-05-29, in the ... room of the [Fredericton Convention Centre](https://www.google.ca/maps/place/Fredericton+Convention+Centre/@45.9603624,-66.6397234,17z/data=!3m1!4b1!4m5!3m4!1s0x4ca418a14d3b0b3f:0xb0d7471229c5f317!8m2!3d45.9603624!4d-66.6375347?hl=en).
 
 The workshop will be run and facilitated by Clark Richards (RBR Ltd.), Marianne Corvellec (CRIM), and Chantelle Layton (Dalhousie University). 
 
 ## Information for participants
 
-1. Install R
+Please get set up before the workshop.
 
-2. Install RStudio
+* Install [R](https://www.r-project.org/) and [RStudio](https://www.rstudio.com/).
 
-3. Install a bunch of R packages that we'll want for the workshop, including:
+* Install the following R packages:
 
   * `oce` and `ocedata`
-  * `foreign`, `mapproj`, `ncdf4`, `tiff`, `akima`, `RSQLite`, `DBI`, `rgdal`, `R`.`utils`, `testthat`, `knitr`
+  * `foreign`, `mapproj`, `ncdf4`, `tiff`, `akima`, `RSQLite`, `DBI`, `rgdal`
+  * `R.utils`, `testthat`, `knitr`
+  * `readr`, `dplyr`, `tidyr`, `ggplot2`
   
-It's possible (likely?) that we'll want to actually install the `develop` version of `oce`, in which case we'll be providing pre-built binaries for both Windows and OSX which can be installed as a zip file.
-
 ## Overview of program
 
-1. Opening remarks, general introductions. What is R and RStudio?
+1. Opening remarks, general introductions. What is R? Why the RStudio IDE?
 
-2. R basics. Syntax, objects, command line interactions
+2. R basics: Syntax, objects, command line interactions
 
-3. Beyond the basics: reading, analyzing, plotting data
+3. Beyond the basics: Analyzing data
 
-  * working with vectors/lists/data frames
-  * fitting models (linear, non-linear, etc)
-  * ...
+  * Data structures (vectors, lists, data frames)
+  * Reading data (CSV, NetCDF, ...)
+  * Fitting models (linear, non-linear, ...)
+  * Visualizing data (publication-quality plots)
 
 4. The `oce` package: an introduction, with examples
 
