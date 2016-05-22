@@ -14,7 +14,7 @@ Please get set up before the workshop.
 
 * Install the following R packages:
 
-  * `oce` and `ocedata`
+  * `oce`, `ocedata`, and `gsw`
   * `foreign`, `mapproj`, `ncdf4`, `tiff`, `akima`, `RSQLite`, `DBI`, `rgdal`
   * `R.utils`, `testthat`, `knitr`
   * `readr`, `dplyr`, `tidyr`, `ggplot2`
