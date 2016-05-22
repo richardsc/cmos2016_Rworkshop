@@ -49,7 +49,9 @@ Please get set up before the workshop.
   * ...
 
 
-## Useful resources:
+## Useful resources
+
+* Data Carpentry: [Data Analysis with R](http://www.datacarpentry.org/R-ecology-lesson/)
 
 * Software Carpentry: [Programming with R](http://swcarpentry.github.io/r-novice-inflammation/)
 
