@@ -1,0 +1,35 @@
+----
+title: Basic oce object format
+author: Clark Richards
+date: 2016-05-21
+----
+
+`oce` uses S4 objects, with standard "slots" that separate:
+
+* `metadata`: relevant metadata created from the input file (e.g. instrument parameters, cruise name, lead PI, etc)
+
+* `data`: the data of the object (e.g. temperature, salinity, pressure, etc)
+
+* `processingLog`: a log of processing steps, with times, applied to the object (e.g. creation, subsetting, etc)
+
+Within an `oce` object, a particular item can be retrieved using the `[[` method (or accessor). E.g. to get the temperature from a ctd object:
+```{r}
+library(oce)
+data(ctd)
+T <- ctd[['temperature']]
+```
+This is the recommended way of accessing fields within an oce object, as it is less brittle to changes in the underlying object structure. 
+
+The data can also be accessed directly, by following the path through the slots, e.g.
+```{r}
+slotNames(ctd)
+str(ctd) # have a look at the "structure" of the object
+T <- ctd@data$temperature
+```
+Note that the `@` character is used to designate slots, while `$` is used to designate the elements of each slot (which are themselves "lists"). This is an explicit way to access fields within the object. While the `[[` method is the recommended and preferred way of extracting fields from an object, there may be cases where it must be done directly (e.g. in re-assignment of an object to a field after passing through a function such as `lapply()`).
+
+As demonstrated above, to get a look at the structure of the object, use the `str()` function (for "`str`ucture"):
+```{r}
+str(ctd)
+```
+

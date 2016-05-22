@@ -14,7 +14,7 @@ The workshop will be run and facilitated by Clark Richards (RBR Ltd.), Marianne 
 
 3. Install a bunch of R packages that we'll want for the workshop, including:
 
-  * `oce` and `ocedata`
+  * `oce`, `ocedata`, and `gsw`
   * `foreign`, `mapproj`, `ncdf4`, `tiff`, `akima`, `RSQLite`, `DBI`, `rgdal`, `R`.`utils`, `testthat`, `knitr`
   
 It's possible (likely?) that we'll want to actually install the `develop` version of `oce`, in which case we'll be providing pre-built binaries for both Windows and OSX which can be installed as a zip file.
