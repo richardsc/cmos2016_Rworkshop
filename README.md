@@ -46,6 +46,7 @@ Please get set up before the workshop.
 6. Other interesting topics:
 
   * Reproducible research and dynamic report generation (e.g. knitr and Rmarkdown)
+  * Package creation (and why you should do it!)
   * ...
 
 
