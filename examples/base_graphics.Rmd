@@ -1,0 +1,227 @@
+# Base graphics example
+
+When it comes to making plots in R, there are a wide variety of options. Popular packages that extend the base plotting capabilities of R include the [`ggplot2`](http://cran.r-project.org/web/packages/ggplot2/index.html) and [`lattice`](http://cran.r-project.org/web/packages/lattice/index.html) packages.
+
+The `oce` package however, almost exclusively uses the base graphics plotting functions. Thus to understand how to tweak, manipulate, and add to plots create through `oce` functions it is a good idea to have an idea how to interact with R's basic graphing system.
+
+## The Basics
+
+Let's start with a basic plot, created from the `adp` dataset in `oce`. For simplicity, we'll extract some of the variables from the adp object, to make the plotting commands cleaner.
+
+```{r}
+library(oce)
+data(adp)
+time <- adp[['time']]
+pressure <- adp[['pressure']]
+temperature <- adp[['temperature']]
+```
+
+We can plot the variables using the `plot()` command. Remember that R and oce use objects and "generic" functions, so if we do something like `plot(adp)`, we are in fact calling the function `plot.adp()` which has different behavior from the default `plot.default()` function (see e.g. `?plot.adp`).
+
+```{r}
+plot(pressure)
+```
+
+makes a plot of the pressure vector against the indices of the vector -- this is the default behavior when only the `x` argument is given. Note that the default plot type is to use points. This can be changed using the `type` argument (see `?plot.default` for details):
+```{r}
+par(mfrow=c(2,2)) # 2 by 2 grid
+plot(pressure, type='p') # default
+plot(pressure, type='l') # lines
+plot(pressure, type='b') # both
+plot(pressure, type='o') # overplotted both
+```
+
+We can plot temperature as a function of pressure:
+```{r}
+par(mfrow=c(1,1))
+plot(pressure, temperature)
+```
+
+or we can use the `~` formula notation to plot as the form `plot(y ~ x)`
+```{r}
+plot(temperature ~ pressure)
+```
+
+Notice that every time you use the `plot()` command, it draws a new plot. This is what is known as a "high-level" plotting function. To add further things to the plot, such as more points, lines, text, legends, etc, requires the use of a series of so-called "low-level" plotting commands.
+
+Let's add some points perturbed from the original by random noise, and use some different "plotting characters", as specified by the `pch` argument:
+```{r}
+plot(pressure, temperature, pch=21, bg='grey')
+pnoise <- rnorm(pressure, sd=sd(pressure)/10)    # first argument specifies desired length
+tnoise <- rnorm(length(temperature), sd=sd(temperature)/10)   # can be a vector or a single number
+points(pressure + pnoise, temperature + tnoise, pch=22, bg='red', cex=0.75)
+```
+
+How about we add a line, such as a least squares fit of T(p) (i.e. a "linear model"):
+```{r}
+plot(pressure, temperature, pch=21, bg='grey')
+grid()   # add a grid
+pnoise <- rnorm(pressure, sd=sd(pressure)/10)    # first argument specifies desired length
+tnoise <- rnorm(length(temperature), sd=sd(temperature)/10)   # can be a vector or a single number
+points(pressure + pnoise, temperature + tnoise, pch=22, bg='red', cex=0.75)
+m <- lm(temperature ~ pressure)
+press.pred <- seq(min(pressure), max(pressure), 0.01)
+temp.pred <- predict(m, list(pressure=press.pred))
+lines(press.pred, temp.pred, lwd=10, col='pink')
+abline(m)      # can add a straight line directly using the lm object
+```
+
+## Tweaking the aesthetics
+
+Notice that the default margins leave lots of room for readability, but may be too large for most practical purposes. To adjust all the different aesthetic aspects of the plot, we make use of the myriad of different "parameters" -- to see all of them do `?par` or type `par()` at the command line. Note that we already used the `mfrow` parameter to set the layout of subplots.
+
+As an example here, we will adjust both the "margins" (through the `mar` parameter) and the "margin positions" (through the `mgp` parameter). We need to call `par()` to set the various parameters *before* doing any plotting.
+
+The current par values can be queried using the `par()` function -- e.g. if we want to know what the current settings are for `mar`, we do:
+```{r}
+par('mar')
+```
+
+These numbers can be interpreted as the number of "lines" around the outside of the plot, starting with the bottom, then the left side, then the top, then the right side. Similarly we can query the `mgp`
+```{r}
+par('mgp')
+```
+
+These 3 numbers represent the line that axis label is printed on, the line the tick labels are printed on, and the line that the axis itself is drawn on.
+
+Let's try changing them to make a tighter plot, plotted next to the original for comparison:
+```{r fig.height=3.5}
+par(mfrow=c(1, 2))
+plot(pressure, temperature, pch=21, bg='grey')
+grid()  
+points(pressure + pnoise, temperature + tnoise, pch=22, bg='red', cex=0.75)
+par(mar=c(3, 3, 1, 1), mgp=c(2, 0.75, 0))
+plot(pressure, temperature, pch=21, bg='grey')
+grid()  
+points(pressure + pnoise, temperature + tnoise, pch=22, bg='red', cex=0.75)
+```
+
+Notice that we've reduced the space around the plot box, and have tightened the labeling of the axes. Let's reproduce the four-panel plot from earlier, but now with the tighter axes:
+```{r}
+par(mfrow=c(2,2), mar=c(3,3,1,1), mgp=c(2, 0.75, 0))
+plot(pressure, type='p')
+plot(pressure, type='l')
+plot(pressure, type='b')
+plot(pressure, type='o')
+```
+
+
+If we wanted, using the `mgp` par, we could move the axis position *away* from the zero position:
+```{r}
+par(mfrow=c(1,1), mar=c(3, 3, 1, 1), mgp=c(2, 0.75, 0.25))
+plot(pressure, temperature, pch=21, bg='grey')
+grid()  
+points(pressure + pnoise, temperature + tnoise, pch=22, bg='red', cex=0.75)
+```
+
+### A note about axis limits, ranges, etc
+
+There are a *lot* of different `par`'s, so it's not surprising that many new R users find it a bit overwhelming. The best resources for discovering and understanding what they do is the `?par` help page and Google. I'll point out a couple more relevant plotting parameters before moving on to legends.
+
+First I'm going to use a call to `dev.off()` to close our open figure window, and thereby reset all the `par` tweaking we've been doing. This should only matter when running the code in an interactive session, but not for compiling the Rmarkdown document.
+```{r}
+dev.off()
+```
+
+Now, we can set the x and y limits in our plot using the `xlim` and `ylim` arguments:
+```{r}
+plot(pressure, temperature, pch=21, bg='grey', xlim=c(37, 41), ylim=c(3, 5))
+title('Set the axis limits')
+grid()  
+points(pressure + pnoise, temperature + tnoise, pch=22, bg='red', cex=0.75)
+```
+
+Note that by default R extends the range of the axes by a small amount. This is essentially an aesthetic choice, in the event that there is a point that lies right on one of the limits, e.g.
+```{r}
+plot(pressure, temperature, pch=21, bg='grey', xlim=range(pressure), ylim=range(temperature))
+title('Default extension of axis limits')
+grid()  
+points(pressure + pnoise, temperature + tnoise, pch=22, bg='red', cex=0.75)
+```
+
+Note that we set the limits *exactly* to the range of the x and y variables, but the actual limits are extended slightly. This behavior is controlled by the `xaxs` and `yaxs` arguments, which from `?par` are:
+```
+     ‘xaxs’ The style of axis interval calculation to be used for the
+          x-axis.  Possible values are ‘"r"’, ‘"i"’, ‘"e"’, ‘"s"’,
+          ‘"d"’.  The styles are generally controlled by the range of
+          data or ‘xlim’, if given.
+          Style ‘"r"’ (regular) first extends the data range by 4
+          percent at each end and then finds an axis with pretty labels
+          that fits within the extended range.
+          Style ‘"i"’ (internal) just finds an axis with pretty labels
+          that fits within the original data range.
+          Style ‘"s"’ (standard) finds an axis with pretty labels
+          within which the original data range fits.
+          Style ‘"e"’ (extended) is like style ‘"s"’, except that it is
+          also ensures that there is room for plotting symbols within
+          the bounding box.
+          Style ‘"d"’ (direct) specifies that the current axis should
+          be used on subsequent plots.
+          (_Only ‘"r"’ and ‘"i"’ styles have been implemented in R._)
+```
+
+From the above it can be seen that the default value "r" (regular), extends the visible axis limits by 4%. If we want the limits to be *exactly* the values specified, we can change `xaxs` and/or `yaxs` to "i" (internal).
+```{r}
+plot(pressure, temperature, pch=21, bg='grey', xlim=range(pressure), ylim=range(temperature), xaxs='i', yaxs='i')
+title('Axis limits set to "internal"')
+grid()  
+points(pressure + pnoise, temperature + tnoise, pch=22, bg='red', cex=0.75)
+```
+
+Note now that the points at the extreme ends get "cut off" by the axis. This is the same as the default behavior in Matlab.
+
+## Legends
+
+It is very common to add a legend to a plot to describe the different elements being plotted. This can be accomplished in R using the base graphics function `legend()`.
+
+The `legend()` function in R is "dumb" -- that is to say, unlike Matlab, the text, symbols, lines and colors that go into the legend are completely independent from the elements of the plot. This has the disadvantage that you need to carefully check your legend to make sure it displays the information that you want and that it is correct. On the other hand, it has the advantage that you can tweak the legend in any way that you want, without being constrained what you've actually plotted. As usual, do `?legend` to learn all about the arguments. Note that many of the arguments for specifying symbols and line types are the same as the plotting arguments that set them (e.g. `pch`, `cex`, `lwd`, etc)
+
+Let's again reproduce the plot from above, but add a legend that describes the different points:
+```{r}
+plot(pressure, temperature, pch=21, bg='grey')
+grid()  
+points(pressure + pnoise, temperature + tnoise, pch=22, bg='red', cex=0.75)
+legend('topleft', c('Original data', 'Perturbed data'),
+       pch=c(21, 22),
+       pt.bg=c('grey', 'red'),
+       pt.cex=c(1, 0.75),
+       bg='white') # blank out the grid behind it
+```
+
+Note that the arguments `pt.bg` and `pt.cex` are used to specify the background color and size of the points, as `bg` and `cex` specify those parameters for the legend itself. 
+
+What if we want to add our linear fit?
+```{r}
+plot(pressure, temperature, pch=21, bg='grey')
+grid()  
+points(pressure + pnoise, temperature + tnoise, pch=22, bg='red', cex=0.75)
+lines(press.pred, temp.pred, lwd=10, col='pink')
+legend('topleft', c('Original data', 'Perturbed data', 'Linear fit'),
+       pch=c(21, 22, NA),
+       pt.bg=c('grey', 'red', NA),
+       pt.cex=c(1, 0.75, NA),
+       lwd=c(NA, NA, 10),
+       col=c(NA, NA, 'pink'),
+       bg='white') # blank out the grid behind it
+```
+
+Notice the use of `NA` when a particular parameter is not relevant -- e.g. the `pch` for the line, or the `lwd` for the two points.
+
+We can also use the legend function as a convenient way to place text inside the plot, though sometimes this is better accomplished using either the `text()` or `mtext()` functions. Here we summarize the fitted slope and intercept from the `m` model, and demonstrate `mtext` and `text`:
+```{r}
+plot(pressure, temperature, pch=21, bg='grey')
+grid()  
+points(pressure + pnoise, temperature + tnoise, pch=22, bg='red', cex=0.75)
+lines(press.pred, temp.pred, lwd=10, col='pink')
+legend('topleft', legend=substitute(T == a + b*p,
+                             list(a=format(coef(m)[[1]], digits=2),
+                                  b=format(coef(m)[[2]], digits=2))),
+       bg='white', x.intersp = 0,
+       title='Regression results:', title.col='red')
+mtext('Some text along the top, on the left', adj=0) # margin text
+mtext('Some text along the top, on the left', adj=1)
+mtext('Some centered text along side=4', side=4)
+text(pressure, temperature + 0.015, pressure, cex=0.6)
+```
+
+If you want to put text, or a legend at a specific location, use the `locator()` function to interactively click on the plot and return the coordinates where you clicked. 
