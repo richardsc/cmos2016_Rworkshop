@@ -16,7 +16,7 @@ Please get set up before the workshop.
 
   * `oce`, `ocedata`, and `gsw`
   * `foreign`, `mapproj`, `ncdf4`, `tiff`, `akima`, `RSQLite`, `DBI`, `rgdal`
-  * `R.utils`, `testthat`, `knitr`
+  * `utils`, `testthat`, `knitr`
   * `readr`, `dplyr`, `tidyr`, `ggplot2`
 
 The easiest way to install the packages is to execute:
