@@ -1,6 +1,7 @@
 ---
-title: Tidal-Harmonic Model Fitting
-author: Dan Kelley, Dalhousie University
+title: "Tidal-Harmonic Model Fitting"
+author: "Dan Kelley, Dalhousie University"
+output: pdf_document
 ---
 
 **Goal.** Demonstrated the use of `oce::tidem()`, which is somewhat similar to `t-tide` in Matlab.
