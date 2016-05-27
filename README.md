@@ -21,7 +21,7 @@ Please get set up before the workshop.
 
 The easiest way to install the packages is to execute:
 ```r
-install.packages('oce', 'ocedata', 'gsw', 'foreign', 'mapproj', 'ncdf4', 'tiff', 'akima', 'RSQLite', 'DBI', 'rgdal', 'R.utils', 'testthat', 'knitr', 'readr', 'dplyr', 'tidyr', 'ggplot2')
+install.packages(c('oce', 'ocedata', 'gsw', 'foreign', 'mapproj', 'ncdf4', 'tiff', 'akima', 'RSQLite', 'DBI', 'rgdal', 'R.utils', 'testthat', 'knitr', 'readr', 'dplyr', 'tidyr', 'ggplot2'))
 ```
 
 at the command prompt in R.
