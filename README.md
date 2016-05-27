@@ -16,7 +16,7 @@ Please get set up before the workshop.
 
   * `oce`, `ocedata`, and `gsw`
   * `foreign`, `mapproj`, `ncdf4`, `tiff`, `akima`, `RSQLite`, `DBI`, `rgdal`
-  * `R.utils`, `testthat`, `knitr`
+  * `utils`, `testthat`, `knitr`
   * `readr`, `dplyr`, `tidyr`, `ggplot2`
 
 The easiest way to install the packages is to execute:
@@ -67,5 +67,9 @@ at the command prompt in R.
 
 * [Advanced R Programming](http://adv-r.had.co.nz/) by Hadley Wickham
 
-    * Hadley's [R vocabulary](http://adv-r.had.co.nz/Vocabulary.html)
+* Hadley's [R vocabulary](http://adv-r.had.co.nz/Vocabulary.html)
+
+* Dan Kelley's blog: [http://dankelley.github.io/blog/](http://dankelley.github.io/blog/)
+
+* Clark Richards' blog: [Coded Ocean](http://clarkrichards.org/)
 
