@@ -1,8 +1,8 @@
-----
+---
 title: Basic oce object format
 author: Clark Richards
 date: 2016-05-21
-----
+---
 
 `oce` uses S4 objects, with standard "slots" that separate:
 

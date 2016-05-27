@@ -1,0 +1,65 @@
+---
+title: The tools of oce, or "how to do stuff"
+author: Clark Richards
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+---
+
+From the [website](http://dankelley.github.io/oce):
+
+> Oce is a package for the R statistical language that helps Oceanographers do their work by providing functions to read Oceanographic data files, to process the data in instrument-specific ways, and to represent the results with plots that follow Oceanographic convention.
+
+This document will go over some of the unique things that oce contains that can help accomplish the basic tasks of data analysis. See the accompanying document [`oce_object_format.Rmd`](oce_object_format.Rmd) for a description of the basic structure of most oce objects.
+
+To start working with the oce package in R, we need to install it. This is done most easily by installing directly from CRAN, the Comprehensive R Archive Network, by doing:
+```{r eval=FALSE}
+install.packages('oce')
+```
+
+which will install the oce package and all of its *dependencies*. We "load" the package (say, at the beginning of a session or at the top of a script) and all of its associated functions and classes using the following command:
+```{r}
+library(oce)
+```
+
+## Reading data for common data types
+
+The oce package recognizes data files from a wide array of different instruments and manufacturers, including:
+
+CTDs (and other water property loggers):
+* SeaBird cnv files
+* RBR rsk files
+* WOCE CTD and Bottle files
+* DFO odf files
+* Argo float files
+* ITP files
+* ...
+
+Current meters:
+* RDI ADCP binary files
+* Nortek current meter (Aquadopp, Vector) and profiler (Aquadopp profiler, AquadoppHR) binary files
+* Sontek profilers
+* S4 current meters
+* ...
+
+Satellite images:
+* Landsat 7 and 8
+* AMSR
+* G1SST
+
+The details for each of those file types are quite involved, and won't specifically be covered here. The reader is advised to view the associated help pages, which are summarized in their entirety in the [CRAN documentation](https://cran.rstudio.com/web/packages/oce/oce.pdf).
+
+Beyond reading data from specific file types, R is particularly well suited to reading data from a wide-variety of formats and files, and the advantage of the data-type classes in oce is that it is relatively easy to create standard objects from data read in from *any* source.
+
+
+## Working with CTDs
+
+
+## Getting stuff out of an object: the "accessor" notation
+
+
+## Making paletted "image" or "pseudocolor" plots
+
+
+## Plotting maps, and adding data to a map
+
+
+
