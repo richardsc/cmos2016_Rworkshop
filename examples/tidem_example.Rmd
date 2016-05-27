@@ -1,0 +1,54 @@
+---
+title: "Tidal-Harmonic Model Fitting"
+author: "Dan Kelley, Dalhousie University"
+output: pdf_document
+---
+
+**Goal.** Demonstrated the use of `oce::tidem()`, which is somewhat similar to `t-tide` in Matlab.
+
+A good test dataset is provided in the `oce` package. This is sea level in Halifax Harbour, in the year 2003.
+
+```{r}
+library(oce)
+data(sealevel)
+t <- sealevel[["time"]]
+eta <- sealevel[["elevation"]]
+plot(t, eta, type='l')
+```
+
+Those who lived in Halifax during 2003 know that Hurricane Juan happened then. Is that the big spike  near the end?
+
+```{r}
+m <- tidem(sealevel) # it 'understands' the first arg to be a sealevel-class object
+etaPredicted <- predict(m)
+plot(t, eta - etaPredicted, type='l')
+```
+
+Well, that spike surely seems to stick out! Let's zoom in and add a dotted line for the approximate
+time Juan hit Halifax (personal knowledge)
+```{r}
+look <- t > as.POSIXct("2003-09-25", tz="UTC")
+plot(t[look], (eta - etaPredicted)[look], type='l')
+tJuan <- as.POSIXct("2003-09-29 04:15:00", tz="UTC")
+abline(v=tJuan, lty='dotted', col='red')
+```
+
+For comparson, let's look again at the raw data
+```{r}
+look <- t > as.POSIXct("2003-09-25", tz="UTC")
+plot(t[look], eta[look], type='l')
+tJuan <- as.POSIXct("2003-09-29 04:15:00", tz="UTC")
+abline(v=tJuan, lty='dotted', col='red')
+```
+
+The peak is there, but *a lot* harder to see, and if it had occured at a lower
+tide, it could easily be missed.
+
+**Exercises.**
+
+1. See whether this surge could be detected against an anomaly field
+constructed by subtracting a low-passed signal.
+
+2. Find wind and pressure data, and see how they line up with this signal.
+(Compute the inverted-barometer effect, for example.)
+
