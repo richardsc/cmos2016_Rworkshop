@@ -1,0 +1,73 @@
+#Peak finding
+```{r}
+rm(list=ls())
+library(oce)
+```
+
+Make fake data
+```{r}
+n <- 365 #number of data points
+t <- seq(0,365*24, by=1) #hourly measurements for a year
+set.seed(1990106) #for consistency
+d <- 0.25*rnorm(length(t),mean=10, sd=2) + sin(2*pi*t*(1/(24*14))) #random noise + sinusoidal signal with 14 day period
+plot(t,d, type='l')
+```
+
+Can we find this 14-day signal using basic time series methods ? First find the auto-correlation (acf). Since there is a sinusoidal signal in the time series, we expect the acf reflect it.
+
+```{r}
+a <- acf(d, lag.max=100*24, main='') #TASK : play with lag.max - do we expect some sort of trend as it is increased?
+```
+
+Example using run length function to identify positive significant peaks
+
+```{r}
+rl <- rle(a$acf[ ,1, 1] > 0)
+csrl <- cumsum(rl$lengths)
+```
+
+Finding the lag of a significant peak is difficult, even with a clear peak, the max functions are not appropriate, instead, fitting a function to the peak is more appropriate. Lets fit a gaussian function to the first positive peak using results from runlength
+
+```{r}
+x <- a$lag[csrl[2]:csrl[3],1 ,1]
+y <- a$acf[csrl[2]:csrl[3],1 ,1]
+nu <- nls(y ~ a * exp(-((x - mu)/(sqrt(2) * sigma))^2), 
+    start = list(a = 0.2, mu = median(x), sigma = 10))
+nu
+
+plot(x,y, type='l')
+lines(x, predict(nu), lty=2)
+```
+
+It does a pretty good job ! What about a spectrum ??
+
+```{r}
+s <- spectrum(d, plot=FALSE, spans=c(8,5)) #TASK: play with spans
+plot(s$freq, s$spec, type='l')
+```
+
+Zoom in. Example of using a variant of the which() function, here we want to find where the max spectral peak occurs, and then find the frequency it is associated with.
+
+```{r}
+plot(s$freq[1:200], s$spec[1:200], type='l')
+wm <- which.max(s$spec)
+mf <- s$freq[wm]
+abline(v=mf)
+1/mf/24
+```
+
+Try log spectrum
+```{r}
+plot(s$freq[1:200], s$spec[1:200], type='l', log="xy")
+wm <- which.max(s$spec)
+mf <- s$freq[wm]
+abline(v=mf)
+1/mf/24
+```
+
+
+
+
+
+
+
