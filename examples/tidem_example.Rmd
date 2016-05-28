@@ -41,8 +41,10 @@ tJuan <- as.POSIXct("2003-09-29 04:15:00", tz="UTC")
 abline(v=tJuan, lty='dotted', col='red')
 ```
 
-The peak is there, but *a lot* harder to see, and if it had occured at a lower
+The peak is there, but *a lot* harder to see, and if it had occurred at a lower
 tide, it could easily be missed.
+
+
 
 **Exercises.**
 
@@ -51,3 +53,5 @@ constructed by subtracting a low-passed signal.
 
 2. Find wind and pressure data, and see how they line up with this signal.
 (Compute the inverted-barometer effect, for example.)
+
+

@@ -74,6 +74,17 @@ the endpoints!)
    smoothness you think you need, for some purpose of interest to you.
 
 3. Apply similar methods to CTD profiles, e.g. extracting data from an `oce`
-   dataset named `ctd`, or from one of the hundredd-odd stations in the `oce`
+   dataset named `ctd`, or from one of the hundred-odd stations in the `oce`
    dataset named `section`.
+
+4. **Advanced.** Read about the `deriv` argument of the `predict` method for
+   smoothing splines (find this by typing `?predict.smooth.spline` in a
+   console) and use what you've learned to calculate
+   $N^2=-(g/\rho_0)\partial\rho/\partial z$ for a CTD profile^[You might want
+   to use a profile from exercise 2 or 3, or you might want to construct one in
+   R ... or you might want to ask the workshop leaders how to read a `.cnv`
+   file on your computer!], adjusting `df` based on criteria of your own
+   selection, noting how $N^2$ varies. NB. the `oce` function named
+   `swN2` calculates $N^2$ in this way, setting `df` based on the number of
+   data, etc.
 
